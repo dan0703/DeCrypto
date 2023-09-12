@@ -1,5 +1,5 @@
 ﻿DeCrypto
-1.0.0.0
+
 
 winexe
 C#
@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NET;NET6_0;NETCOREAPP
 C:\Users\danse\source\repos\DeCrypto\DeCrypto\App.xaml
-2-1851444487
+11511144637
 
-6-1236704333
+3948301010
 194-1976662911
-Login.xaml;RegisterUser.xaml;
+Login.xaml;
 
-True
+False
 
