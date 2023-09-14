@@ -23,5 +23,10 @@ namespace DeCrypto
         {
             InitializeComponent();
         }
+
+        private void Button_Login_Entry_Copy_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
