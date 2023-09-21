@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl" Namespace="DecryptoModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2005">
+        <EntityContainer Name="DecryptoModelTargetContainer" >
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="DecryptoModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="DecryptoModelContainer" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="AccountSet" EntityType="DecryptoModel.Account" />
+          <EntitySet Name="HistorySet" EntityType="DecryptoModel.History" />
+          <AssociationSet Name="AccountAccount" Association="DecryptoModel.AccountAccount">
+            <End Role="Account" EntitySet="AccountSet" />
+            <End Role="Account1" EntitySet="AccountSet" />
+          </AssociationSet>
+          <AssociationSet Name="HistoryAccount" Association="DecryptoModel.HistoryAccount">
+            <End Role="History" EntitySet="HistorySet" />
+            <End Role="Account" EntitySet="AccountSet" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Account">
+          <Key>
+            <PropertyRef Name="Nickname" />
+          </Key>
+          <Property Name="Nickname" Type="String" Nullable="false" annotation:StoreGeneratedPattern="Identity" MaxLength="20" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="45" />
+          <Property Name="EmailVerify" Type="Boolean" Nullable="false" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="45" />
+          <NavigationProperty Name="Account1" Relationship="DecryptoModel.AccountAccount" FromRole="Account" ToRole="Account1" />
+          <NavigationProperty Name="Account2" Relationship="DecryptoModel.AccountAccount" FromRole="Account1" ToRole="Account" />
+          <Property Name="IsOnline" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="History" Relationship="DecryptoModel.HistoryAccount" FromRole="Account" ToRole="History" />
+        </EntityType>
+        <EntityType Name="History">
+          <Key>
+            <PropertyRef Name="HistoryId" />
+          </Key>
+          <Property Name="HistoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GamesWon" Type="String" Nullable="false" />
+          <Property Name="GamesLost" Type="String" Nullable="false" />
+          <Property Name="GamesTied" Type="String" Nullable="false" />
+          <NavigationProperty Name="Account" Relationship="DecryptoModel.HistoryAccount" FromRole="History" ToRole="Account" />
+        </EntityType>
+        <Association Name="AccountAccount">
+          <End Type="DecryptoModel.Account" Role="Account" Multiplicity="1" />
+          <End Type="DecryptoModel.Account" Role="Account1" Multiplicity="*" />
+        </Association>
+        <Association Name="HistoryAccount">
+          <End Type="DecryptoModel.History" Role="History" Multiplicity="1" />
+          <End Type="DecryptoModel.Account" Role="Account" Multiplicity="1" />
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs" Space="C-S">
+        <Alias Key="Model" Value="DecryptoModel" />
+        <Alias Key="Target" Value="DecryptoModel.Store" />
+        <EntityContainerMapping CdmEntityContainer="DecryptoModelContainer" StorageEntityContainer="DecryptoModelTargetContainer">
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
