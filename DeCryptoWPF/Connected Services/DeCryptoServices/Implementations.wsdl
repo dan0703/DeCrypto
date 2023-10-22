@@ -58,11 +58,41 @@
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
+  <wsp:Policy wsu:Id="NetTcpBinding_IJoinToGame_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <msb:BinaryEncoding xmlns:msb="http://schemas.microsoft.com/ws/06/2004/mspolicy/netbinary1" />
+        <sp:TransportBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:TransportToken>
+              <wsp:Policy>
+                <msf:WindowsTransportSecurity xmlns:msf="http://schemas.microsoft.com/ws/2006/05/framing/policy">
+                  <msf:ProtectionLevel>EncryptAndSign</msf:ProtectionLevel>
+                </msf:WindowsTransportSecurity>
+              </wsp:Policy>
+            </sp:TransportToken>
+            <sp:AlgorithmSuite>
+              <wsp:Policy>
+                <sp:Basic256 />
+              </wsp:Policy>
+            </sp:AlgorithmSuite>
+            <sp:Layout>
+              <wsp:Policy>
+                <sp:Strict />
+              </wsp:Policy>
+            </sp:Layout>
+          </wsp:Policy>
+        </sp:TransportBinding>
+        <wsaw:UsingAddressing />
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
   <wsdl:types>
     <xsd:schema targetNamespace="http://tempuri.org/Imports">
       <xsd:import schemaLocation="http://localhost:8082/?xsd=xsd0" namespace="http://tempuri.org/" />
       <xsd:import schemaLocation="http://localhost:8082/?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
       <xsd:import schemaLocation="http://localhost:8082/?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/Domain.data" />
+      <xsd:import schemaLocation="http://localhost:8082/?xsd=xsd3" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="IAccountServices_RegisterAccount_InputMessage">
@@ -89,11 +119,26 @@
   <wsdl:message name="IPlayerServices_RegisterPlayer_OutputMessage">
     <wsdl:part name="parameters" element="tns:RegisterPlayerResponse" />
   </wsdl:message>
-  <wsdl:message name="IPlayerServices_AddPlayer_InputMessage">
-    <wsdl:part name="parameters" element="tns:AddPlayer" />
+  <wsdl:message name="IJoinToGame_CreateRoom_InputMessage">
+    <wsdl:part name="parameters" element="tns:CreateRoom" />
   </wsdl:message>
-  <wsdl:message name="IPlayerServices_AddPlayer_OutputMessage">
-    <wsdl:part name="parameters" element="tns:AddPlayerResponse" />
+  <wsdl:message name="IJoinToGame_CreateRoom_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CreateRoomResponse" />
+  </wsdl:message>
+  <wsdl:message name="IJoinToGame_JoinToRoom_InputMessage">
+    <wsdl:part name="parameters" element="tns:JoinToRoom" />
+  </wsdl:message>
+  <wsdl:message name="IJoinToGame_LeaveRoom_InputMessage">
+    <wsdl:part name="parameters" element="tns:LeaveRoom" />
+  </wsdl:message>
+  <wsdl:message name="IJoinToGame_LeaveRoom_OutputMessage">
+    <wsdl:part name="parameters" element="tns:LeaveRoomResponse" />
+  </wsdl:message>
+  <wsdl:message name="IJoinToGame_RecivePlayers_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:RecivePlayers" />
+  </wsdl:message>
+  <wsdl:message name="IJoinToGame_RecivePlayers_InputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:RecivePlayersResponse" />
   </wsdl:message>
   <wsdl:portType name="IAccountServices">
     <wsdl:operation name="RegisterAccount">
@@ -114,9 +159,22 @@
       <wsdl:input wsaw:Action="http://tempuri.org/IPlayerServices/RegisterPlayer" message="tns:IPlayerServices_RegisterPlayer_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IPlayerServices/RegisterPlayerResponse" message="tns:IPlayerServices_RegisterPlayer_OutputMessage" />
     </wsdl:operation>
-    <wsdl:operation name="AddPlayer">
-      <wsdl:input wsaw:Action="http://tempuri.org/IPlayerServices/AddPlayer" message="tns:IPlayerServices_AddPlayer_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IPlayerServices/AddPlayerResponse" message="tns:IPlayerServices_AddPlayer_OutputMessage" />
+  </wsdl:portType>
+  <wsdl:portType name="IJoinToGame">
+    <wsdl:operation name="CreateRoom">
+      <wsdl:input wsaw:Action="http://tempuri.org/IJoinToGame/CreateRoom" message="tns:IJoinToGame_CreateRoom_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IJoinToGame/CreateRoomResponse" message="tns:IJoinToGame_CreateRoom_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="JoinToRoom">
+      <wsdl:input wsaw:Action="http://tempuri.org/IJoinToGame/JoinToRoom" message="tns:IJoinToGame_JoinToRoom_InputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="LeaveRoom">
+      <wsdl:input wsaw:Action="http://tempuri.org/IJoinToGame/LeaveRoom" message="tns:IJoinToGame_LeaveRoom_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IJoinToGame/LeaveRoomResponse" message="tns:IJoinToGame_LeaveRoom_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="RecivePlayers">
+      <wsdl:output wsaw:Action="http://tempuri.org/IJoinToGame/RecivePlayers" message="tns:IJoinToGame_RecivePlayers_OutputCallbackMessage" />
+      <wsdl:input wsaw:Action="http://tempuri.org/IJoinToGame/RecivePlayersResponse" message="tns:IJoinToGame_RecivePlayers_InputCallbackMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="NetTcpBinding_IAccountServices" type="tns:IAccountServices">
@@ -162,8 +220,36 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="AddPlayer">
-      <soap12:operation soapAction="http://tempuri.org/IPlayerServices/AddPlayer" style="document" />
+  </wsdl:binding>
+  <wsdl:binding name="NetTcpBinding_IJoinToGame" type="tns:IJoinToGame">
+    <wsp:PolicyReference URI="#NetTcpBinding_IJoinToGame_policy" />
+    <soap12:binding transport="http://schemas.microsoft.com/soap/tcp" />
+    <wsdl:operation name="CreateRoom">
+      <soap12:operation soapAction="http://tempuri.org/IJoinToGame/CreateRoom" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="JoinToRoom">
+      <soap12:operation soapAction="http://tempuri.org/IJoinToGame/JoinToRoom" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+    </wsdl:operation>
+    <wsdl:operation name="LeaveRoom">
+      <soap12:operation soapAction="http://tempuri.org/IJoinToGame/LeaveRoom" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RecivePlayers">
+      <soap12:operation soapAction="http://tempuri.org/IJoinToGame/RecivePlayers" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -186,6 +272,15 @@
       <soap12:address location="net.tcp://localhost:8081/PlayerService" />
       <wsa10:EndpointReference>
         <wsa10:Address>net.tcp://localhost:8081/PlayerService</wsa10:Address>
+        <Identity xmlns="http://schemas.xmlsoap.org/ws/2006/02/addressingidentity">
+          <Upn>LAPTOP_DAN\danse</Upn>
+        </Identity>
+      </wsa10:EndpointReference>
+    </wsdl:port>
+    <wsdl:port name="NetTcpBinding_IJoinToGame" binding="tns:NetTcpBinding_IJoinToGame">
+      <soap12:address location="net.tcp://localhost:8081/JoinToGameService" />
+      <wsa10:EndpointReference>
+        <wsa10:Address>net.tcp://localhost:8081/JoinToGameService</wsa10:Address>
         <Identity xmlns="http://schemas.xmlsoap.org/ws/2006/02/addressingidentity">
           <Upn>LAPTOP_DAN\danse</Upn>
         </Identity>

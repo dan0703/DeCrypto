@@ -33,6 +33,7 @@ namespace DeCryptoWPF
         private void Button_MenuGame_NewGame_Click(object sender, RoutedEventArgs e)
         {
             GameRoom gameRoomWindow= new GameRoom();
+            gameRoomWindow.ConfigurateWindow(account);
             Close();
             gameRoomWindow.ShowDialog();
         }

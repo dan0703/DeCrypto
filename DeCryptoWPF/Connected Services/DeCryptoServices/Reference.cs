@@ -331,12 +331,6 @@ namespace DeCryptoWPF.DeCryptoServices {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPlayerServices/RegisterPlayer", ReplyAction="http://tempuri.org/IPlayerServices/RegisterPlayerResponse")]
         System.Threading.Tasks.Task<bool> RegisterPlayerAsync(DeCryptoWPF.DeCryptoServices.User user);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPlayerServices/AddPlayer", ReplyAction="http://tempuri.org/IPlayerServices/AddPlayerResponse")]
-        void AddPlayer(string nickname);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPlayerServices/AddPlayer", ReplyAction="http://tempuri.org/IPlayerServices/AddPlayerResponse")]
-        System.Threading.Tasks.Task AddPlayerAsync(string nickname);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -373,13 +367,88 @@ namespace DeCryptoWPF.DeCryptoServices {
         public System.Threading.Tasks.Task<bool> RegisterPlayerAsync(DeCryptoWPF.DeCryptoServices.User user) {
             return base.Channel.RegisterPlayerAsync(user);
         }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="DeCryptoServices.IJoinToGame", CallbackContract=typeof(DeCryptoWPF.DeCryptoServices.IJoinToGameCallback))]
+    public interface IJoinToGame {
         
-        public void AddPlayer(string nickname) {
-            base.Channel.AddPlayer(nickname);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IJoinToGame/CreateRoom", ReplyAction="http://tempuri.org/IJoinToGame/CreateRoomResponse")]
+        int CreateRoom();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IJoinToGame/CreateRoom", ReplyAction="http://tempuri.org/IJoinToGame/CreateRoomResponse")]
+        System.Threading.Tasks.Task<int> CreateRoomAsync();
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IJoinToGame/JoinToRoom")]
+        void JoinToRoom(int code, string nickname);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IJoinToGame/JoinToRoom")]
+        System.Threading.Tasks.Task JoinToRoomAsync(int code, string nickname);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IJoinToGame/LeaveRoom", ReplyAction="http://tempuri.org/IJoinToGame/LeaveRoomResponse")]
+        void LeaveRoom(string nickname, int code);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IJoinToGame/LeaveRoom", ReplyAction="http://tempuri.org/IJoinToGame/LeaveRoomResponse")]
+        System.Threading.Tasks.Task LeaveRoomAsync(string nickname, int code);
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    public interface IJoinToGameCallback {
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IJoinToGame/RecivePlayers", ReplyAction="http://tempuri.org/IJoinToGame/RecivePlayersResponse")]
+        void RecivePlayers(System.Collections.Generic.Dictionary<string, byte[]> profiles);
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    public interface IJoinToGameChannel : DeCryptoWPF.DeCryptoServices.IJoinToGame, System.ServiceModel.IClientChannel {
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    public partial class JoinToGameClient : System.ServiceModel.DuplexClientBase<DeCryptoWPF.DeCryptoServices.IJoinToGame>, DeCryptoWPF.DeCryptoServices.IJoinToGame {
+        
+        public JoinToGameClient(System.ServiceModel.InstanceContext callbackInstance) : 
+                base(callbackInstance) {
         }
         
-        public System.Threading.Tasks.Task AddPlayerAsync(string nickname) {
-            return base.Channel.AddPlayerAsync(nickname);
+        public JoinToGameClient(System.ServiceModel.InstanceContext callbackInstance, string endpointConfigurationName) : 
+                base(callbackInstance, endpointConfigurationName) {
+        }
+        
+        public JoinToGameClient(System.ServiceModel.InstanceContext callbackInstance, string endpointConfigurationName, string remoteAddress) : 
+                base(callbackInstance, endpointConfigurationName, remoteAddress) {
+        }
+        
+        public JoinToGameClient(System.ServiceModel.InstanceContext callbackInstance, string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
+                base(callbackInstance, endpointConfigurationName, remoteAddress) {
+        }
+        
+        public JoinToGameClient(System.ServiceModel.InstanceContext callbackInstance, System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
+                base(callbackInstance, binding, remoteAddress) {
+        }
+        
+        public int CreateRoom() {
+            return base.Channel.CreateRoom();
+        }
+        
+        public System.Threading.Tasks.Task<int> CreateRoomAsync() {
+            return base.Channel.CreateRoomAsync();
+        }
+        
+        public void JoinToRoom(int code, string nickname) {
+            base.Channel.JoinToRoom(code, nickname);
+        }
+        
+        public System.Threading.Tasks.Task JoinToRoomAsync(int code, string nickname) {
+            return base.Channel.JoinToRoomAsync(code, nickname);
+        }
+        
+        public void LeaveRoom(string nickname, int code) {
+            base.Channel.LeaveRoom(nickname, code);
+        }
+        
+        public System.Threading.Tasks.Task LeaveRoomAsync(string nickname, int code) {
+            return base.Channel.LeaveRoomAsync(nickname, code);
         }
     }
 }
